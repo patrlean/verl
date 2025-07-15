@@ -101,6 +101,15 @@ def default_compute_score(
         from . import search_r1_like_qa_em
 
         res = search_r1_like_qa_em.compute_score(solution_str, ground_truth)
+    elif data_source in [
+        "HuggingFaceH4/MATH-500",
+        "HuggingFaceH4/aime_2024",
+        "math-ai/aime25",
+        "zwhe99/simplerl",
+    ]:
+        from . import gsm8k
+
+        res = gsm8k.compute_score(solution_str, ground_truth)
 
     else:
         raise NotImplementedError(f"Reward function is not implemented for {data_source=}")
