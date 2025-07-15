@@ -4,7 +4,7 @@ set -x
 python3 -m verl.trainer.main_ppo \
     algorithm.adv_estimator=grpo \
     data.train_files=$HOME/data/simplerl/train.parquet \
-    data.val_files=[$HOME/data/aime24/test.parquet, $HOME/data/math500/test.parquet, $HOME/data/aime25/test.parquet, ] \
+    data.val_files=[$HOME/data/aime24/test.parquet, $HOME/data/math500/test.parquet, $HOME/data/aime25/test.parquet, $HOME/data/livebench_language/test.parquet] \
     data.train_batch_size=32 \
     data.max_prompt_length=2048 \
     data.max_response_length=32768 \
