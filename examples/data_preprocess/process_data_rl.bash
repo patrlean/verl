@@ -57,4 +57,14 @@ else
     exit 1
 fi
 
+# 处理livebench_language数据集
+echo "Processing livebench_language dataset..."
+python livebench_language.py --local_dir ~/data/livebench_language 
+if [ $? -eq 0 ]; then
+    echo "livebench_language processing completed successfully"
+else
+    echo "livebench_language processing failed"
+    exit 1
+fi
+
 echo "All datasets processed successfully!"

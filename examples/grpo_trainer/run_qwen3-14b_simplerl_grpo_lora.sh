@@ -4,14 +4,14 @@ set -x
 python3 -m verl.trainer.main_ppo \
     algorithm.adv_estimator=grpo \
     data.train_files=$HOME/data/simplerl/train.parquet \
-    data.val_files=[$HOME/data/aime24/test.parquet, $HOME/data/math500/test.parquet, $HOME/data/aime25/test.parquet, $HOME/data/livebench_language/test.parquet] \
+    data.val_files="[$HOME/data/aime24/test.parquet, $HOME/data/math500/test.parquet, $HOME/data/aime25/test.parquet, $HOME/data/livebench_language/test.parquet]" \
     data.train_batch_size=32 \
     data.max_prompt_length=2048 \
-    data.max_response_length=32768 \
+    data.max_response_length=24768 \
     data.filter_overlong_prompts=True \
     data.truncation='error' \
     data.shuffle=False \
-    actor_rollout_ref.model.path=Qwen/Qwen3-14B \
+    actor_rollout_ref.model.path=/root/.cache/huggingface/hub/models--Qwen--Qwen3-14B/snapshots/8268fe3026cb304910457689366670e803a6fd56 \
     actor_rollout_ref.model.use_shm=True \
     actor_rollout_ref.model.lora_rank=64 \
     actor_rollout_ref.model.lora_alpha=32 \
@@ -42,6 +42,6 @@ python3 -m verl.trainer.main_ppo \
     trainer.experiment_name='qwen3-14b_simplerl_grpo_lora' \
     trainer.n_gpus_per_node=2 \
     trainer.nnodes=1 \
-    trainer.save_freq=3 \
-    trainer.test_freq=1 \
-    trainer.total_epochs=9 $@
+    trainer.save_freq=10 \
+    trainer.test_freq=5 \
+    trainer.total_epochs=9 2>&1 | tee verl_demo.log
