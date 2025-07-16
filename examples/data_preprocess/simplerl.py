@@ -46,6 +46,8 @@ if __name__ == "__main__":
     # only keep level 5
     train_dataset = dataset["train"].filter(lambda x: x["level"] == 5)
 
+    train_dataset = train_dataset.select(range(2048))
+
     instruction_following = 'Let\'s think step by step and output the final answer after "####".'
 
     # add a row to each data item that represents a unique id
