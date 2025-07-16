@@ -65,7 +65,7 @@ if __name__ == "__main__":
                     }
                 ],
                 "ability": "math",
-                "reward_model": {"style": "rule", "ground_truth": solution},
+                "reward_model": {"style": "math", "ground_truth": solution},
                 "extra_info": {
                     "split": split,
                     "index": idx,

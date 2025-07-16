@@ -69,7 +69,7 @@ if __name__ == "__main__":
                 "extra_info": {
                     "split": split,
                     "index": idx,
-                    "answer": None,
+                    "answer": "None",
                     "question": question_raw,
                 },
             }
