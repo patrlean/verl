@@ -18,3 +18,4 @@ chmod +x ./process_data_rl.bash
 # 测试 transformers
 python3 -c "import transformers; transformers.pipeline('text-generation', model='Qwen/Qwen3-14B')"
 
+python3 -c "import transformers; transformers.pipeline('text-generation', model='Qwen/Qwen3-8B')"

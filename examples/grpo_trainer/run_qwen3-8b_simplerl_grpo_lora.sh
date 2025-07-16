@@ -4,20 +4,21 @@ set -x
 python3 -m verl.trainer.main_ppo \
     algorithm.adv_estimator=grpo \
     data.train_files=$HOME/data/simplerl/train.parquet \
-    data.val_files=$HOME/data/aime24/test.parquet \
+    data.val_files=$HOME/data/gsm8k/test.parquet \
     data.train_batch_size=32 \
     data.max_prompt_length=1024 \
-    data.max_response_length=20768 \
+    data.max_response_length=16384 \
     data.filter_overlong_prompts=True \
     data.truncation='error' \
     data.shuffle=False \
+    actor_rollout_ref.rollout.max_num_batched_tokens=70000 \
     actor_rollout_ref.model.path=/root/.cache/huggingface/hub/models--Qwen--Qwen3-8B/snapshots/9c925d64d72725edaf899c6cb9c377fd0709d9c5 \
     actor_rollout_ref.model.use_shm=True \
     actor_rollout_ref.model.lora_rank=64 \
     actor_rollout_ref.model.lora_alpha=32 \
     actor_rollout_ref.actor.optim.lr=1e-6 \
     actor_rollout_ref.model.use_remove_padding=True \
-    actor_rollout_ref.actor.ppo_mini_batch_size=16 \
+    actor_rollout_ref.actor.ppo_mini_batch_size=8 \
     actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=2 \
     actor_rollout_ref.actor.use_kl_loss=True \
     actor_rollout_ref.actor.kl_loss_coef=0.001 \
@@ -42,6 +43,6 @@ python3 -m verl.trainer.main_ppo \
     trainer.experiment_name='qwen3-8b_simplerl_grpo_lora' \
     trainer.n_gpus_per_node=2 \
     trainer.nnodes=1 \
-    trainer.save_freq=10 \
+    trainer.save_freq=5 \
     trainer.test_freq=5 \
-    trainer.total_epochs=9 2>&1 | tee verl_demo.log
+    trainer.total_epochs=2 2>&1 | tee verl_demo.log
