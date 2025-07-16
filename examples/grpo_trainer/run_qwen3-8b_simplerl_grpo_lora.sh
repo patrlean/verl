@@ -5,13 +5,13 @@ python3 -m verl.trainer.main_ppo \
     algorithm.adv_estimator=grpo \
     data.train_files=$HOME/data/simplerl/train.parquet \
     data.val_files=$HOME/data/gsm8k/test.parquet \
-    data.train_batch_size=32 \
+    data.train_batch_size=256 \
     data.max_prompt_length=1024 \
     data.max_response_length=16384 \
     data.filter_overlong_prompts=True \
     data.truncation='error' \
     data.shuffle=False \
-    actor_rollout_ref.rollout.max_num_batched_tokens=70000 \
+    actor_rollout_ref.rollout.max_num_batched_tokens=32748 \
     actor_rollout_ref.model.path=/root/.cache/huggingface/hub/models--Qwen--Qwen3-8B/snapshots/9c925d64d72725edaf899c6cb9c377fd0709d9c5 \
     actor_rollout_ref.model.use_shm=True \
     actor_rollout_ref.model.lora_rank=64 \
@@ -31,7 +31,7 @@ python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.tensor_model_parallel_size=2 \
     actor_rollout_ref.rollout.name=vllm \
     actor_rollout_ref.rollout.gpu_memory_utilization=0.6 \
-    actor_rollout_ref.rollout.n=4 \
+    actor_rollout_ref.rollout.n=5 \
     actor_rollout_ref.rollout.load_format=safetensors \
     actor_rollout_ref.rollout.layered_summon=True \
     actor_rollout_ref.ref.log_prob_micro_batch_size_per_gpu=2 \
@@ -41,7 +41,7 @@ python3 -m verl.trainer.main_ppo \
     trainer.logger='["console","wandb"]' \
     trainer.project_name='qwen3-8b-grpo' \
     trainer.experiment_name='qwen3-8b_simplerl_grpo_lora' \
-    trainer.n_gpus_per_node=2 \
+    trainer.n_gpus_per_node=8 \
     trainer.nnodes=1 \
     trainer.save_freq=5 \
     trainer.test_freq=5 \
