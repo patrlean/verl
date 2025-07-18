@@ -67,4 +67,14 @@ else
     exit 1
 fi
 
+# 处理QwQ-LongCoT
+echo "Processing QwQ-LongCoT dataest ..."
+python QwQLongCoT.py 
+if [ $? -eq 0 ]; then
+    echo "QwQ-LongCoT processing completed successfully"
+else
+    echo "QwQ-LongCoT processing failed"
+    exit 1
+fi
+
 echo "All datasets processed successfully!"
