@@ -46,7 +46,7 @@ if __name__ == "__main__":
     train_dataset = dataset["train"].select(range(2048))
 
 
-    test_dataset = dataset["test"].shuffle(seed=42).select(range(2048))
+    test_dataset = dataset["test"].shuffle(seed=42).select(range(512))
 
     instruction_following = 'Let\'s think step by step and output the final answer after "####".'
 
