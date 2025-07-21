@@ -1,0 +1,15 @@
+python -m verl.trainer.main_eval_no_ray \
+    data.path=$HOME/data/gsm8k/qwen3_8b_base_gen_gsm8k_test.parquet \
+    custom_reward_function.path=/workspace/verl/verl/utils/reward_score/gsm8k.py \
+    custom_reward_function.name=compute_score 2>&1 | tee compute.log
+
+python -m verl.trainer.main_eval_no_ray \
+    data.path=$HOME/data/gsm8k/qwen3_8b_base_sft_gsm8k_test.parquet \
+    custom_reward_function.path=/workspace/verl/verl/utils/reward_score/gsm8k.py \
+    custom_reward_function.name=compute_score 2>&1 | tee compute.log
+
+python -m verl.trainer.main_eval_no_ray \
+    data.path=$HOME/data/gsm8k/qwen3_8b_base_sft_grpo_gsm8k_test.parquet \
+    custom_reward_function.path=/workspace/verl/verl/utils/reward_score/gsm8k.py \
+    custom_reward_function.name=compute_score 2>&1 | tee compute.log
+

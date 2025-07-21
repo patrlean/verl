@@ -25,13 +25,34 @@ from verl.utils.hdfs_io import copy, makedirs
 
 
 def extract_solution(solution_str):
-    pattern = re.compile(r"\$?\s*\\boxed\{\s*([^}]+?)\s*\}\s*\$?")
-    m = pattern.search(solution_str)
-    if m is None:
+    # 查找 \boxed{ 的位置
+    boxed_start = solution_str.find(r'\boxed{')
+    if boxed_start == -1:
         raise ValueError("未找到 \\boxed{…} 结构")
     
-    # m.group(1) 就是花括号里的内容
-    final_answer = m.group(1).replace(",", "").strip()
+    # 从 \boxed{ 后开始查找匹配的花括号
+    content_start = boxed_start + len(r'\boxed{')
+    brace_count = 1
+    pos = content_start
+    
+    # 确保不会超出字符串范围
+    while pos < len(solution_str) and brace_count > 0:
+        char = solution_str[pos]
+        if char == '{':
+            brace_count += 1
+        elif char == '}':
+            brace_count -= 1
+        pos += 1
+    
+    if brace_count > 0:
+        # 提供更详细的错误信息以便调试
+        preview = solution_str[max(0, boxed_start):min(len(solution_str), boxed_start + 100)]
+        raise ValueError(f"未找到匹配的右花括号，预览内容: {preview}")
+    
+    # 提取花括号内的内容
+    final_answer = solution_str[content_start:pos-1].strip()
+    # 移除可能的逗号（如数字中的千位分隔符）
+    final_answer = final_answer.replace(",", "")
     return final_answer
 
 
@@ -51,6 +72,29 @@ if __name__ == "__main__":
     
     # filter problem length
     train_dataset = train_dataset.filter(lambda x: len(x["problem"]) < 4000)
+
+    # filter solution with \boxed inside
+    def has_complete_boxed(example):
+        solution = example["solution"]
+        boxed_start = solution.find(r'\boxed{')
+        if boxed_start == -1:
+            return False
+        
+        # 检查是否有匹配的右花括号
+        content_start = boxed_start + len(r'\boxed{')
+        brace_count = 1
+        pos = content_start
+        
+        while pos < len(solution) and brace_count > 0:
+            if solution[pos] == '{':
+                brace_count += 1
+            elif solution[pos] == '}':
+                brace_count -= 1
+            pos += 1
+        
+        return brace_count == 0
+    
+    train_dataset = train_dataset.filter(has_complete_boxed)
 
     # only save first 2k data
     train_dataset = train_dataset.select(range(2048))
@@ -88,13 +132,11 @@ if __name__ == "__main__":
         return process_fn
 
     train_dataset = train_dataset.map(function=make_map_fn("train"), with_indices=True)
-    test_dataset = test_dataset.map(function=make_map_fn("test"), with_indices=True)
 
     local_dir = args.local_dir
     hdfs_dir = args.hdfs_dir
 
     train_dataset.to_parquet(os.path.join(local_dir, "train.parquet"))
-    test_dataset.to_parquet(os.path.join(local_dir, "test.parquet"))
 
     if hdfs_dir is not None:
         makedirs(hdfs_dir)

@@ -1,0 +1,33 @@
+# 测试评估配置 - 用于QwQ-LongCoT数据集
+data:
+  # 数据文件路径 - 指向处理后的parquet文件
+  path: ~/data/QwQ-LongCoT-Verified-130K/train.parquet
+  
+  # 数据列名配置 - 与QwQLongCoT.py生成的数据格式匹配
+  prompt_key: prompt
+  response_key: responses  # 假设您已生成响应数据
+  data_source_key: data_source
+  reward_model_key: reward_model
+  
+  # 是否使用共享内存加速（可选）
+  use_shm: false
+
+# 自定义奖励函数配置
+custom_reward_function:
+  # 使用内置的数学验证函数
+  path: verl.recipe.r1.tasks.math
+  name: compute_score
+
+# Ray分布式计算配置
+ray_init:
+  # CPU数量 - 根据您的系统调整
+  num_cpus: 8
+  # 性能分析文件（可选）
+  timeline_json_file: null
+
+# 额外配置（可选）
+evaluation:
+  # 批处理大小
+  batch_size: 100
+  # 是否显示详细输出
+  verbose: true 

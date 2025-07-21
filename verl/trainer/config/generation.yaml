@@ -33,7 +33,7 @@ rollout:
   max_model_len: null
   max_num_seqs: 1024
   log_prob_micro_batch_size: null # will be deprecated, use log_prob_micro_batch_size_per_gpu
-  log_prob_micro_batch_size_per_gpu: 8
+  log_prob_micro_batch_size_per_gpu: 4
   # for hf rollout
   do_sample: True
   disable_log_stats: True
